@@ -585,6 +585,18 @@
   window.addEventListener('load', animateCounters);
 
 </script>
+<script>
+  // Run after the page loads
+  window.onload = function() {
+    // Check the user agent string
+    if (/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      // Redirect to mobile site
+      window.location.href = "index2.html";
+    } else {
+    
+    }
+  };
+</script>
 
 
 </body>
