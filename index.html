@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NB2E38S72Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NB2E38S72Z');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>May Foundation</title>
+  <link rel="icon" href="logo.jpeg" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script async src="https://www.instagram.com/embed.js"></script>
+
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-soft: #e0ecff;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --bg: #ffffff;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    section {
+      padding: 6rem 1.5rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .center { text-align: center; }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero small {
+      letter-spacing: 0.2em;
+      color: var(--blue);
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4rem);
+      font-weight: 700;
+      margin: 1rem 0;
+    }
+
+    .hero h1 span { color: var(--blue); }
+
+    .hero p {
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: auto;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 1.7rem;
+      border-radius: 999px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 12px 35px rgba(37,99,235,0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #e5e7eb;
+    }
+
+    .btn:hover { transform: translateY(-3px); }
+
+    /* ---------- IMPACT ---------- */
+    .impact {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+    }
+
+    .impact h2 { font-size: 2.6rem; font-weight: 700; }
+    .impact p { color: var(--text-muted); }
+
+    /* ---------- WHAT WE DO ---------- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .card {
+      background: #f8fafc;
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: all 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.06);
+    }
+
+    .card i { color: var(--blue); margin-bottom: 1rem; }
+
+    /* ---------- GALLERY ---------- */
+    .gallery {
+      display: flex;
+      gap: 1.2rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+    }
+
+    .gallery img {
+      height: 220px;
+      border-radius: var(--radius);
+      transition: transform 0.4s ease;
+      flex-shrink: 0;
+    }
+
+    .gallery img:hover { transform: scale(1.08); }
+
+    /* ---------- FOUNDERS ---------- */
+    .founders {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .founder img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .founder span {
+      color: var(--blue);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .founder p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ---------- CTA ---------- */
+    .cta-box {
+      background: radial-gradient(circle at center, #eef4ff, #ffffff);
+      border-radius: 40px;
+      padding: 6rem 2rem;
+    }
+
+    footer {
+      padding: 3rem 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+    }
+
+    /* ---------- ANIMATIONS ---------- */
+    .fade {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.9s ease;
+    }
+    .fade.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- DONATE MODAL ---------- */
+    #donateModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    #donateModal img {
+      max-width: 300px;
+      border-radius: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<section class="hero center fade">
+  <div>
+    <small>MAY FOUNDATION</small>
+    <h1>Small actions.<br><span>Real change.</span></h1>
+    <p>We believe in the quiet power of simple, focused action.</p>
+    <button class="btn btn-primary" onclick="openDonateModal()">Get involved →</button>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="center fade">
+  <small>OUR IMPACT</small>
+  <div class="impact">
+    <div><h2 class="count" data-target="12942">0</h2><p>Lives touched</p></div>
+    <div><h2 class="count" data-target="48">0</h2><p>Communities</p></div>
+    <div><h2 class="count" data-target="97">0%</h2><p>Direct impact</p></div>
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="center fade">
+  <small>WHAT WE DO</small>
+  <h2>Focused where it matters.</h2>
+  <div class="cards">
+    <div class="card"><i data-feather="heart"></i><h3>Healthcare Access</h3><p>Essential care for those who need it most.</p></div>
+    <div class="card"><i data-feather="book"></i><h3>Education</h3><p>Opening doors through learning.</p></div>
+    <div class="card"><i data-feather="users"></i><h3>Community Building</h3><p>Strengthening bonds that matter.</p></div>
+    <div class="card"><i data-feather="leaf"></i><h3>Sustainability</h3><p>Protecting tomorrow, today.</p></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="center fade">
+  <small>MOMENTS THAT MATTER</small>
+  <div class="gallery">
+    <img src="1.jpeg"><img src="2.jpeg"><img src="3.jpeg">
+    <img src="4.jpeg"><img src="5.jpeg"><img src="6.jpeg">
+    <img src="7.jpeg"><img src="8.jpeg"><img src="9.jpeg">
+    <img src="10.jpeg"><img src="11.jpeg">
+    <img src="post0.jpeg"><img src="post1.png"><img src="post2.jpeg">
+    <img src="post3.jpeg"><img src="post4.jpeg"><img src="post5.jpeg">
+    <img src="post6.jpeg"><img src="post7.jpeg"><img src="post8.jpeg">
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section class="center fade">
+  <small>LEADERSHIP</small>
+  <h2>Built on belief.</h2>
+
+  <div class="founders">
+    <div class="founder">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DJHpcBusBZm/"></blockquote>
+    </div>
+    <div class="founder">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DJHpeKMMOfu/"></blockquote>
+    </div>
+    <div class="founder">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DJHpgOts04U/"></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="center fade">
+  <div class="cta-box">
+    <h2>Be part of something <span style="color:var(--blue)">meaningful.</span></h2>
+    <p style="color:var(--text-muted);margin:1rem 0 2rem;">Every contribution creates ripples.</p>
+    <button class="btn btn-primary" onclick="openDonateModal()">Donate</button>
+    <a href="https://tinyurl.com/mayfoundation" class="btn btn-outline">Get involved →</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 May Foundation</div>
+  <div>About · Contact · Privacy</div>
+</footer>
+
+<!-- DONATE MODAL -->
+<div id="donateModal">
+  <div class="center">
+    <button onclick="closeDonateModal()" class="btn btn-outline">Close</button><br><br>
+    <img src="donate-qr.jpeg">
+  </div>
+</div>
+
+<script>
+  feather.replace();
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => e.isIntersecting && e.target.classList.add('show'));
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.count').forEach(counter => {
+    const target = +counter.dataset.target;
+    let i = 0;
+    const step = target / 100;
+    const update = () => {
+      i += step;
+      counter.innerText = Math.round(i);
+      if (i < target) requestAnimationFrame(update);
+      else counter.innerText = target;
+    };
+    update();
+  });
+
+  function openDonateModal(){ document.getElementById("donateModal").style.display="flex"; }
+  function closeDonateModal(){ document.getElementById("donateModal").style.display="none"; }
+</script>
+
+</body>
+</html>
