@@ -3,16 +3,134 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow" />
     <title>May Foundation</title>
+    <meta
+      name="description"
+      content="May Foundation is closed for the time being. Thank you to everyone who was part of it."
+    />
+    <meta property="og:title" content="May Foundation" />
+    <meta
+      property="og:description"
+      content="Closed for the time being. Thank you, all of you."
+    />
     <style>
+      :root {
+        --canvas: #fff4f2;
+        --ink: #16255c;
+        --muted: #5c668a;
+        --coral: #fa7268;
+        --royal: #2445a0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
       html,
       body {
-        margin: 0;
         height: 100%;
-        background: #ffffff;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      main {
+        max-width: 34rem;
+        text-align: center;
+        animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      svg {
+        width: 3.25rem;
+        height: auto;
+      }
+
+      h1 {
+        margin-top: 1.75rem;
+        font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+        font-size: clamp(1.9rem, 6vw, 2.9rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+      }
+
+      p {
+        margin-top: 1.15rem;
+        color: var(--muted);
+        font-size: 1.02rem;
+        line-height: 1.7;
+      }
+
+      .rule {
+        width: 2.5rem;
+        height: 2px;
+        margin: 2.25rem auto 0;
+        border-radius: 2px;
+        background: var(--coral);
+      }
+
+      .name {
+        margin-top: 2.25rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        main {
+          animation: none;
+        }
       }
     </style>
   </head>
-  <body></body>
+  <body>
+    <main>
+      <svg viewBox="0 0 40 32" fill="none" aria-hidden="true">
+        <path
+          d="M7.5 5.5C2.2 11 2.8 20.4 9.8 26.5"
+          stroke="var(--royal)"
+          stroke-width="3.1"
+          stroke-linecap="round"
+        />
+        <path
+          d="M32.5 5.5C37.8 11 37.2 20.4 30.2 26.5"
+          stroke="var(--royal)"
+          stroke-width="3.1"
+          stroke-linecap="round"
+        />
+        <path
+          d="M20 25.6c-5.2-3.9-8.4-7-8.4-10.7 0-2.6 2-4.6 4.5-4.6 1.5 0 2.9.7 3.9 1.9 1-1.2 2.4-1.9 3.9-1.9 2.5 0 4.5 2 4.5 4.6 0 3.7-3.2 6.8-8.4 10.7Z"
+          fill="var(--coral)"
+        />
+      </svg>
+
+      <h1>We are closed for the time being.</h1>
+
+      <p>
+        Thank you to everyone who gave their time, their support and their trust.
+        Every one of you made this work possible.
+      </p>
+
+      <div class="rule"></div>
+
+      <p class="name">May Foundation</p>
+    </main>
+  </body>
 </html>
