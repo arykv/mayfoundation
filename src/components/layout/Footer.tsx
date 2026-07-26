@@ -9,7 +9,7 @@ export function Footer() {
   ]
 
   return (
-    <footer id="contact" className="bg-dusk text-canvas">
+    <footer id="contact" data-nav-theme="dark" className="bg-dusk text-canvas">
       <div className="shell border-t border-canvas/10 py-16">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>

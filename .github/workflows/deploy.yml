@@ -1,8 +1,9 @@
 name: Deploy to GitHub Pages
 
+# Manual only, on purpose. The live site is intentionally showing a closing
+# notice, so nothing here should publish by merging. Add the `push` trigger back
+# when this branch is meant to go live.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

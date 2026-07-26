@@ -11,7 +11,11 @@ type Props = { onDonate: () => void }
  */
 export function Involve({ onDonate }: Props) {
   return (
-    <section id="involve" className="relative overflow-hidden bg-dusk text-canvas">
+    <section
+      id="involve"
+      data-nav-theme="dark"
+      className="relative overflow-hidden bg-dusk text-canvas"
+    >
       <div className="aura opacity-60" />
       <div className="grain absolute inset-0" />
 

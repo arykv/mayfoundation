@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -7,12 +7,53 @@ import { Button } from '@/components/ui/Button'
 
 type Props = { onDonate: () => void }
 
+/** Vertical band the nav pill occupies, used to test what is behind it. */
+const NAV_BAND = 88
+
 export function Nav({ onDonate }: Props) {
   const [condensed, setCondensed] = useState(false)
+  const [onDark, setOnDark] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { scrollY } = useScroll()
 
-  useMotionValueEvent(scrollY, 'change', (y) => setCondensed(y > 40))
+  /**
+   * Sections that paint themselves dark opt in with data-nav-theme, and the bar
+   * inverts while one of them passes under it. Straight geometry rather than an
+   * IntersectionObserver: the dark sections are lazy-loaded, so an observer has
+   * to be torn down and rebuilt as they mount, and it reliably missed the first
+   * delivery when it did.
+   */
+  const syncTheme = useCallback(() => {
+    let dark = false
+    for (const el of document.querySelectorAll('[data-nav-theme="dark"]')) {
+      const rect = el.getBoundingClientRect()
+      if (rect.top <= NAV_BAND && rect.bottom >= NAV_BAND) {
+        dark = true
+        break
+      }
+    }
+    setOnDark(dark)
+  }, [])
+
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    setCondensed(y > 40)
+    syncTheme()
+  })
+
+  // Re-check when a lazy section mounts, since that changes what is underneath
+  // the bar without the page having scrolled.
+  useEffect(() => {
+    syncTheme()
+
+    const mutations = new MutationObserver(syncTheme)
+    mutations.observe(document.body, { childList: true, subtree: true })
+    window.addEventListener('resize', syncTheme)
+
+    return () => {
+      mutations.disconnect()
+      window.removeEventListener('resize', syncTheme)
+    }
+  }, [syncTheme])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -32,26 +73,25 @@ export function Nav({ onDonate }: Props) {
 
       <header className="fixed inset-x-0 top-0 z-50 pt-3 sm:pt-5">
         <div className="shell">
-          <motion.div
-            animate={{
-              backgroundColor: condensed
-                ? 'rgba(255,251,250,0.82)'
-                : 'rgba(255,251,250,0)',
-              borderColor: condensed
-                ? 'rgba(22,37,92,0.10)'
-                : 'rgba(22,37,92,0)',
-              paddingTop: condensed ? 8 : 12,
-              paddingBottom: condensed ? 8 : 12,
-            }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-between rounded-full border px-4 backdrop-blur-xl sm:px-5"
+          {/* Plain CSS rather than motion props: Framer writes inline styles
+              every frame, and any Tailwind colour transition on the same element
+              fights it — the bar would keep snapping back to its light state. */}
+          <div
+            className={cn(
+              'flex items-center justify-between rounded-full border px-4 backdrop-blur-xl sm:px-5',
+              'transition-[background-color,border-color,color,padding] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]',
+              condensed ? 'py-2' : 'py-3',
+              !condensed && 'border-transparent bg-transparent text-ink',
+              condensed && !onDark && 'border-ink/10 bg-paper/85 text-ink',
+              condensed && onDark && 'border-canvas/15 bg-dusk/75 text-canvas',
+            )}
           >
             <a
               href="#top"
               className="flex items-center gap-2.5"
               aria-label={`${org.name} — home`}
             >
-              <MarkIcon />
+              <MarkIcon onDark={onDark} />
               <span className="font-display text-[1.05rem] font-semibold tracking-tight">
                 May Foundation
               </span>
@@ -62,10 +102,20 @@ export function Nav({ onDonate }: Props) {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="group relative text-sm text-muted transition-colors hover:text-ink"
+                  className={cn(
+                    'group relative text-sm transition-colors',
+                    onDark
+                      ? 'text-canvas/70 hover:text-canvas'
+                      : 'text-muted hover:text-ink',
+                  )}
                 >
                   {item.label}
-                  <span className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-coral-deep transition-transform duration-300 group-hover:scale-x-100" />
+                  <span
+                    className={cn(
+                      'absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100',
+                      onDark ? 'bg-coral' : 'bg-coral-deep',
+                    )}
+                  />
                 </a>
               ))}
             </nav>
@@ -79,14 +129,17 @@ export function Nav({ onDonate }: Props) {
               </Button>
               <button
                 onClick={() => setMenuOpen((v) => !v)}
-                className="rounded-full p-2.5 text-ink transition-colors hover:bg-blush lg:hidden"
+                className={cn(
+                  'rounded-full p-2.5 transition-colors lg:hidden',
+                  onDark ? 'text-canvas hover:bg-white/10' : 'text-ink hover:bg-blush',
+                )}
                 aria-expanded={menuOpen}
                 aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               >
                 {menuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </header>
 
@@ -140,7 +193,10 @@ export function Nav({ onDonate }: Props) {
 }
 
 /** The logo mark, redrawn as vector: two hands, one heart. */
-function MarkIcon({ className }: { className?: string }) {
+function MarkIcon({ className, onDark }: { className?: string; onDark?: boolean }) {
+  // Royal blue disappears against the dark block, so the hands go to canvas there.
+  const hands = onDark ? 'text-canvas' : 'text-royal'
+
   return (
     <svg
       viewBox="0 0 40 32"
@@ -153,14 +209,14 @@ function MarkIcon({ className }: { className?: string }) {
         stroke="currentColor"
         strokeWidth="3.1"
         strokeLinecap="round"
-        className="text-royal"
+        className={cn('transition-colors duration-400', hands)}
       />
       <path
         d="M32.5 5.5C37.8 11 37.2 20.4 30.2 26.5"
         stroke="currentColor"
         strokeWidth="3.1"
         strokeLinecap="round"
-        className="text-royal"
+        className={cn('transition-colors duration-400', hands)}
       />
       <path
         d="M20 25.6c-5.2-3.9-8.4-7-8.4-10.7 0-2.6 2-4.6 4.5-4.6 1.5 0 2.9.7 3.9 1.9 1-1.2 2.4-1.9 3.9-1.9 2.5 0 4.5 2 4.5 4.6 0 3.7-3.2 6.8-8.4 10.7Z"

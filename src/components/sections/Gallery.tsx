@@ -80,36 +80,42 @@ export function Gallery() {
     </button>
   ))
 
-  return (
-    <section id="field" className="relative py-24 sm:py-28 lg:pt-36">
-      <div className="shell">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="eyebrow">Field notes</p>
-              <h2 className="mt-5 max-w-[20ch] text-[length:var(--text-title)] font-semibold leading-[1.1]">
-                What the work actually looks like.
-              </h2>
-            </div>
-            <p className="max-w-[26ch] text-sm text-muted">
-              {gallery.length} photographs from sessions, camps and drives. Tap any of
-              them.
-            </p>
+  const header = (
+    <div className="shell">
+      <Reveal>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow">Field notes</p>
+            <h2 className="mt-5 max-w-[20ch] text-[length:var(--text-title)] font-semibold leading-[1.1]">
+              What the work actually looks like.
+            </h2>
           </div>
-        </Reveal>
-      </div>
+          <p className="max-w-[26ch] text-sm text-muted">
+            {gallery.length} photographs from sessions, camps and drives. Tap any of
+            them.
+          </p>
+        </div>
+      </Reveal>
+    </div>
+  )
 
+  return (
+    <section id="field" className={pinned ? 'relative' : 'relative py-24 sm:py-28'}>
       {pinned ? (
         <div
           ref={pinRef}
           style={{ height: `calc(100vh + ${Math.round(distance * SCROLL_RATIO)}px)` }}
-          className="relative mt-14"
+          className="relative"
         >
-          <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+          {/* The heading travels with the rail rather than sitting above it —
+              otherwise centring the rail in a full-height pin leaves a screen's
+              worth of dead space between the two. */}
+          <div className="sticky top-0 flex h-screen flex-col justify-center gap-12 overflow-hidden pt-20">
+            {header}
             <motion.div
               ref={railRef}
               style={{ x }}
-              className="flex h-[58vh] max-h-[560px] gap-5 pl-10 will-change-transform"
+              className="flex h-[52vh] max-h-[520px] gap-5 pl-10 will-change-transform"
             >
               {tiles}
               <div className="w-10 shrink-0" aria-hidden />
@@ -117,14 +123,19 @@ export function Gallery() {
           </div>
         </div>
       ) : (
-        <div className="hide-scrollbar mt-12 flex h-[44vh] max-h-[420px] snap-x snap-mandatory gap-4 overflow-x-auto px-6 sm:px-10">
-          {gallery.map((name, i) => (
-            <div key={name} className="h-full shrink-0 snap-start">
-              {tiles[i]}
-            </div>
-          ))}
-          <div className="w-2 shrink-0" aria-hidden />
-        </div>
+        <>
+          {header}
+          {/* scroll-padding matches the inline padding — without it the first
+              tile snaps to the scrollport edge and cancels the inset. */}
+          <div className="hide-scrollbar mt-12 flex h-[44vh] max-h-[420px] snap-x snap-mandatory gap-4 overflow-x-auto scroll-pl-6 px-6 sm:scroll-pl-10 sm:px-10">
+            {gallery.map((name, i) => (
+              <div key={name} className="h-full shrink-0 snap-start">
+                {tiles[i]}
+              </div>
+            ))}
+            <div className="w-2 shrink-0" aria-hidden />
+          </div>
+        </>
       )}
 
       <Lightbox
